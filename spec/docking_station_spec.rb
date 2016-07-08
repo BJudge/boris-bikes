@@ -1,45 +1,49 @@
-require './lib/docking_station.rb'
+require 'docking_station'
 
 describe DockingStation do
-  it { is_expected.to respond_to(:release_bike) }
-  it { is_expected.to respond_to(:dock).with(1).argument }
-  it { is_expected.to respond_to(:bike) }
 
   describe '#release_bike' do
-  it 'raises an error when there are no bikes' do
-    expect { subject.release_bike }.to raise_error 'No bikes available'
+    it 'releases a bike' do
+      bike = Bike.new
+      subject.dock(bike)
+      expect(subject.release_bike).to eq bike
+    end
+    # Do we want this:?
+    it {is_expected.to respond_to :release_bike}
+    it 'raises an error if there are no bikes' do
+      expect { subject.release_bike }.to raise_error("No bikes!")
+    end
   end
 
-  it 'releases a bike' do
+  it 'is working' do
     bike = Bike.new
-    subject.dock(bike)
-    expect(subject.release_bike).to eq bike
-  end
-end
-
-  it 'releases working bikes' do
-    bike = Bike.new
-    subject.dock(bike)
-    subject.release_bike
     expect(bike).to be_working
   end
 
-describe "#dock_bike" do
-  it 'raises an error when docking station is full' do
-    bike = Bike.new
-    subject.dock(bike)
-    expect { subject.dock(bike) }.to raise_error 'Docking Station is full'
+  describe '#dock' do
+    it 'docks something' do
+      bike = Bike.new
+      expect(subject.dock(bike)).to eq bike
+    end
+    it 'return docked bikes' do
+      bike = Bike.new
+      subject.dock(bike)
+      expect(subject.bikes).to eq bike
+    end
+    it 'raises an error when docking station is at capacity' do
+      bike = Bike.new
+      subject.dock(bike)
+      bike2 = Bike.new
+      expect { subject.dock(bike2) }.to raise_error("Cannot accept bike - Full")
+    end
   end
 
-  it 'docks bike' do
-    bike = Bike.new
-    expect(subject.dock(bike)).to eq bike
-  end
 end
 
-  it 'returns docked bikes' do
-    bike = Bike.new
-    subject.dock(bike)
-    expect(subject.bike).to eq bike
-  end
+=begin
+Should we also have this:
+it 'release working bikes' do
+  bike = subject.release_bike
+  expect(bike).to be_working
 end
+=end
