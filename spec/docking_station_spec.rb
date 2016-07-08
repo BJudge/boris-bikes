@@ -28,8 +28,8 @@ describe DockingStation do
     it 'return docked bikes' do
       bike = Bike.new
       subject.dock(bike)
-      expect(subject.bikes).to eq [bike]
     end
+  
     describe 'raises an error when docking station is at capacity' do
        it 'raises an error when full' do
          20.times { subject.dock Bike.new }
