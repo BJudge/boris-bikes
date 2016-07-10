@@ -47,6 +47,8 @@ describe DockingStation do
       subject.dock(bike)
     end
 
+     it { is_expected.to respond_to(:dock).with(2).argument }
+
     it 'raises an error when full' do
          subject.capacity.times { subject.dock Bike.new }
          expect { subject.dock Bike.new }.to raise_error 'Cannot accept bike - Full'
